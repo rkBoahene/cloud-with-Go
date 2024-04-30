@@ -50,3 +50,18 @@ func (s *Server) Start() error {
 		return fmt.Errorf("Error starting server : %w", err)
 	}return nil
 }
+
+
+// stop server gracefully within timeout
+func (s *Server) Stop() error{
+	fmt.Println("Stopping server")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	if err := s.server.Shutdown(ctx); err != nil {
+		return fmt.Errorf("Error stopping server: %w", err)
+	}
+
+	return nil
+}
